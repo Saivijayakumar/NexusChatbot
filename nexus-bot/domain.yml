@@ -1,0 +1,46 @@
+version: "3.1"
+
+intents:
+  - greet
+  - goodbye
+  - affirm
+  - deny
+  - mood_great
+  - bot_challenge
+  - leaves_count
+  - Leave_info
+  - Leaves_api_info
+
+actions:
+ - action_leave_info
+
+responses:
+  utter_greet:
+  - text: "Hey! How can i help you "
+  - text: "hello , what can I do for you"
+
+  utter_did_that_help:
+  - text: "Did that help you?"
+
+  utter_leaveinfo:
+  - text: "You have 5 leaves available "
+    image: "how many days you need?"
+
+  utter_grantleave:
+  - text: "Congratulations! Your leaves have been applied."
+
+  utter_feedback:
+  - text: "Does this help?"
+
+  utter_goodbye:
+  - text: "Thank you,Bye"
+
+  utter_sorry:
+  - text: "sorry for that"
+
+  utter_iamabot:
+  - text: "I am a bot, powered by Rasa."
+
+session_config:
+  session_expiration_time: 60
+  carry_over_slots_to_new_session: true
