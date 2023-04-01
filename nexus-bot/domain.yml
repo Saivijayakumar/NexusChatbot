@@ -9,7 +9,6 @@ intents:
   - bot_challenge
   - leaves_count
   - Leave_info
-  - Leaves_api_info
 
 actions:
  - action_leave_info
@@ -23,8 +22,7 @@ responses:
   - text: "Did that help you?"
 
   utter_leaveinfo:
-  - text: "You have 5 leaves available "
-    image: "how many days you need?"
+  - text: "you have multiple types of leave available "
 
   utter_grantleave:
   - text: "Congratulations! Your leaves have been applied."

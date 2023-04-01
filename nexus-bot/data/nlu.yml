@@ -101,10 +101,3 @@ nlu:
     - am I talking to a bot?
     - am I talking to a human?
 
-- intent: Leaves_api_info
-  examples: |
-    - how many leaves i have 
-    - leaves have
-    - count of leaves
-    - leaves count
-    - tell me my leaves count
