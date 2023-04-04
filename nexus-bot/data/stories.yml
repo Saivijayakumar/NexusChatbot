@@ -7,72 +7,80 @@ stories:
   - intent: greet
   - action: utter_greet
   - intent: Leave_info
-  - action: utter_leaveinfo
   - action: action_leave_info
+  - intent: affirm
+  - action: utter_leavesdayinfo
   - intent: leaves_count
-  - action: utter_grantleave
+  - action: utter_fromdateinfo
+  - intent: From_date
+  - action: action_welcome
   - action: utter_feedback
   - intent: affirm
   - action: utter_goodbye
 
-- story: happy path 2
-  steps:
-  - intent: Leave_info
-  - action: utter_leaveinfo
-  - action: action_leave_info
-  - intent: leaves_count
-  - action: utter_grantleave
-  - action: utter_feedback
-  - intent: affirm
-  - action: utter_goodbye
+# - story: happy path 2
+#   steps:
+#   - action: action_welcome
+#   - intent: Leave_info
+#   - action: utter_leaveinfo
+#   - action: action_leave_info
+#   - intent: leaves_count
+#   - action: utter_grantleave
+#   - action: utter_feedback
+#   - intent: affirm
+#   - action: utter_goodbye
 
-- story: happy path 3
-  steps:
-  - intent: Leave_info
-  - action: utter_leaveinfo
-  - action: action_leave_info
-  - intent: leaves_count
-  - action: utter_grantleave
-  - action: utter_feedback
-  - intent: deny
-  - action: utter_sorry
-  - action: utter_goodbye
+# - story: happy path 3
+#   steps:
+#   - action: action_welcome
+#   - intent: Leave_info
+#   - action: utter_leaveinfo
+#   - action: action_leave_info
+#   - intent: leaves_count
+#   - action: utter_grantleave
+#   - action: utter_feedback
+#   - intent: deny
+#   - action: utter_sorry
+#   - action: utter_goodbye
 
-- story: sad path 1
-  steps:
-  - intent: greet
-  - action: utter_greet
-  - intent: Leave_info
-  - action: utter_leaveinfo
-  - action: action_leave_info
-  - intent: leaves_count
-  - action: utter_grantleave
-  - action: utter_feedback
-  - intent: deny
-  - action: utter_sorry
-  - action: utter_goodbye
+# - story: sad path 1
+#   steps:
+#   - action: action_welcome
+#   - intent: greet
+#   - action: utter_greet
+#   - intent: Leave_info
+#   - action: utter_leaveinfo
+#   - action: action_leave_info
+#   - intent: leaves_count
+#   - action: utter_grantleave
+#   - action: utter_feedback
+#   - intent: deny
+#   - action: utter_sorry
+#   - action: utter_goodbye
 
-- story: sad path 2
-  steps:
-  - intent: greet
-  - action: utter_greet
-  - intent: deny
-  - action: utter_sorry
-  - action: utter_goodbye
+# - story: sad path 2
+#   steps:
+#   - action: action_welcome
+#   - intent: greet
+#   - action: utter_greet
+#   - intent: deny
+#   - action: utter_sorry
+#   - action: utter_goodbye
   
-- story: sad path 3
-  steps:
-  - intent: greet
-  - action: utter_greet
-  - intent: Leave_info
-  - action: utter_leaveinfo
-  - action: action_leave_info
-  - intent: leaves_count
-  - action: utter_grantleave
-  - action: utter_feedback
-  - intent: deny
-  - action: utter_sorry
-  - action: utter_goodbye
+# - story: sad path 3
+#   steps:
+#   - action: action_welcome
+#   - intent: greet
+#   - action: utter_greet
+#   - intent: Leave_info
+#   - action: utter_leaveinfo
+#   - action: action_leave_info
+#   - intent: leaves_count
+#   - action: utter_grantleave
+#   - action: utter_feedback
+#   - intent: deny
+#   - action: utter_sorry
+#   - action: utter_goodbye
 
 
   

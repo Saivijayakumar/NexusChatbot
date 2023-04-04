@@ -65,17 +65,22 @@ nlu:
     - three
     - four
     - five
+- intent: From_date
+  examples: |
+    - from [23/09/22](fromdate) to [24/09/22](todate)
+    - apply from [01/09/22](fromdate) to [02/10/22](todate)
+    - [12/09/22](fromdate) to [13/09/22](todate)
 
 - intent: Leave_info
   examples: |
-    - i want to apply leave
+    - Apply for leave
     - i want to apply for leave
-    - how can i apply leave
-    - how many leaves are there
-    - i want leave
-    - how to apply leave
-    - apply leave
-    - leave apply
+    - Can you help me apply for leave, please?
+    - Could you guide me through the process of applying for leave?
+    - I want to apply for leave, how can you help me with that?
+    - Please help me to fill out a leave application form.
+    - How can I apply for leave through this chatbot?
+    - Can you please help me with the leave application process?
 
 - intent: mood_great
   examples: |

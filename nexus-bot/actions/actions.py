@@ -52,7 +52,7 @@ class ActionHelloWorld(Action):
             tracker: Tracker,
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
         
-
+        
         url = "https://nexusuat.tvsnext.io:1180/api/Leaves/GetAvailableLeaveDetailsByEmployee?employeeID="
 
 
@@ -63,6 +63,30 @@ class ActionHelloWorld(Action):
         resp = requests.get(url+"1", headers=headers).json()
 
         for data in resp['data']:
-            print(f"you have {data['availableLeaves']} Avilable Leaves from {data['leaveType']}")
-            dispatcher.utter_message(text=f"you have {data['availableLeaves']} Avilable Leaves from {data['leaveType']}")
+            if data['leaveType'] == 'Old Earned Leave':
+                print(f"you have {data['availableLeaves']} Avilable Leaves from {data['leaveType']}")
+                dispatcher.utter_message(text=f"you have {data['availableLeaves']} Avilable Leaves from {data['leaveType']}")
+                dispatcher.utter_message(text="Would you like to apply?")
         return []
+
+class ActionWelcome(Action):
+
+    def name(self) -> Text:
+        return "action_welcome"
+
+    def run(self, dispatcher: CollectingDispatcher,
+            tracker: Tracker,
+            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+
+        dispatcher.utter_message(text=tracker.get_slot("fromdate"))
+        dispatcher.utter_message(text=tracker.get_slot("todate"))
+        dispatcher.utter_message(text="Welcome, I am a vijay")
+        return []
+        # This run function will be executed when "action_session_start" is
+        # triggered.
+        # The session should begin with a 'session_started' event
+        # events = [SessionStarted()]
+        # dispatcher.utter_message(
+        #     text="Hi! How can I help you?")
+        # events.append(ActionExecuted("action_listen"))
+        # return events

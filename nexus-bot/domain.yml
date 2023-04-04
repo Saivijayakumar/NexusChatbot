@@ -9,23 +9,44 @@ intents:
   - bot_challenge
   - leaves_count
   - Leave_info
+  - From_date
 
 actions:
  - action_leave_info
+ - action_welcome
+
+entities:
+- fromdate
+- todate
+
+slots:
+  fromdate:
+    type: text
+    mappings:
+    - type: from_entity
+      entity: fromdate
+      intent: From_date
+  todate:
+   type: text
+   mappings:
+    - type: from_entity
+      entity: todate
+      intent: From_date
+
+
 
 responses:
   utter_greet:
-  - text: "Hey! How can i help you "
-  - text: "hello , what can I do for you"
+  - text: "Hi,I am your HR Helpdesk Augmented Assistant \n What can I do for you?"
 
   utter_did_that_help:
   - text: "Did that help you?"
 
-  utter_leaveinfo:
-  - text: "you have multiple types of leave available "
+  utter_leavesdayinfo:
+  - text: "For how many days would you like to apply?"
 
-  utter_grantleave:
-  - text: "Congratulations! Your leaves have been applied."
+  utter_fromdateinfo:
+  - text: "From which Date would you like to Apply?"
 
   utter_feedback:
   - text: "Does this help?"
@@ -38,6 +59,7 @@ responses:
 
   utter_iamabot:
   - text: "I am a bot, powered by Rasa."
+
 
 session_config:
   session_expiration_time: 60
