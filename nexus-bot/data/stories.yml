@@ -13,35 +13,46 @@ stories:
   - intent: leaves_count
   - action: utter_fromdateinfo
   - intent: From_date
+  - action: utter_empty
   - action: action_welcome
   - action: utter_feedback
   - intent: affirm
   - action: utter_goodbye
 
-# - story: happy path 2
+# - story: happy path
 #   steps:
-#   - action: action_welcome
-#   - intent: Leave_info
-#   - action: utter_leaveinfo
-#   - action: action_leave_info
 #   - intent: leaves_count
-#   - action: utter_grantleave
+#   - action: utter_fromdateinfo
+#   - intent: From_date
+#   - action: utter_empty
+#   - action: action_welcome
 #   - action: utter_feedback
 #   - intent: affirm
 #   - action: utter_goodbye
 
-# - story: happy path 3
+
+# - story: happy path 2
 #   steps:
-#   - action: action_welcome
 #   - intent: Leave_info
-#   - action: utter_leaveinfo
 #   - action: action_leave_info
+#   - intent: affirm
+#   - action: utter_leavesdayinfo
 #   - intent: leaves_count
-#   - action: utter_grantleave
+#   - action: utter_fromdateinfo
+#   - intent: From_date
+#   - action: action_welcome
 #   - action: utter_feedback
 #   - intent: deny
 #   - action: utter_sorry
 #   - action: utter_goodbye
+
+# - story: happy path 3
+#   steps:
+#   - intent: Leave_info
+#   - action: action_leave_info
+#   - intent: deny
+#   - action: utter_goodbye
+
 
 # - story: sad path 1
 #   steps:

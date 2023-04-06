@@ -55,21 +55,31 @@ nlu:
 
 - intent: leaves_count
   examples: |
-    - 1
-    - 2
-    - 3
-    - 4
-    - 5
-    - one
-    - two
-    - three
-    - four
-    - five
+    - i want [1](daycount) day leave
+    - i want [2](daycount) days
+    - [3](daycount) days
+    - [2](daycount) day
+
+# - intent: leaves_count
+#   examples: |
+#     - 1
+#     - 2
+#     - 3
+#     - 4
+#     - 5
+#     - one
+#     - two
+#     - three
+#     - four
+#     - five
+    
 - intent: From_date
   examples: |
     - from [23/09/22](fromdate) to [24/09/22](todate)
     - apply from [01/09/22](fromdate) to [02/10/22](todate)
     - [12/09/22](fromdate) to [13/09/22](todate)
+    - i want form [21/12/22](fromdate) to [22/12/22](todate)
+    - [22/11/23](fromdate) [26/11/23](todate)
 
 - intent: Leave_info
   examples: |

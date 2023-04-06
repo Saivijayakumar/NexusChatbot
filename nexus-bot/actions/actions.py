@@ -78,15 +78,57 @@ class ActionWelcome(Action):
             tracker: Tracker,
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
 
-        dispatcher.utter_message(text=tracker.get_slot("fromdate"))
-        dispatcher.utter_message(text=tracker.get_slot("todate"))
-        dispatcher.utter_message(text="Welcome, I am a vijay")
+        print("Hello world")
+        # dispatcher.utter_message(text=tracker.get_slot("fromdate"))
+        # dispatcher.utter_message(text=tracker.get_slot("todate"))
+        #dispatcher.utter_message(text=tracker.get_slot("daycount"))
+        
+        fromdatevalue = '2023-04-05'
+        todatevalue = '2023-04-05'
+        url = "https://nexusuat.tvsnext.io:1180/api/Leaves/InsertorUpdateApplyLeave"
+
+
+        headers = {
+            'Authorization': 'Bearer eyJhbGciOiJSUzI1NiIsImtpZCI6IkVGRjc4NDM0MUMzQTA1REFENEVBODYyNERBRjgzNTEzIiwidHlwIjoiYXQrand0In0.eyJuYmYiOjE2ODAyNjUxNzEsImV4cCI6MTY4NDE1MzE3MSwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo1MDAwIiwiYXVkIjoiTmV4dXNBUEkiLCJjbGllbnRfaWQiOiJuZXh1c191aSIsImp0aSI6IjcwRTZBNDFCMzhFNTIyRjgwNkU3QzlGRTlBMkQxM0YxIiwiaWF0IjoxNjgwMjY1MTcxLCJzY29wZSI6WyJOZXh1c0FQSSJdfQ.pqOG4pU7QqWDZWw2Dz874gMyMw-O0xyrnfSf2L0yjCqv4vJYTb2N9URcrzw75wv6RVW7zsvRabRRiKz8WhKxgHCDWORZZyY_F5pNfRy9kPlcskPBqo3HCezUrWbt1EcgeCRKwT6D1F6tWudKXj9pd8iBj6VuhZVv8XeFiKhF0pn3OYpHofV_IsIRJuYzK895Ckn0w3RHLRR4dFoiHbz_kP1q--FNI7hvexDduzl2BicTu40m5rliZ1kfPyy4_lm9lyHl8b1yn4BMPIccLwjEUrAMzHlTonWUXeV4wG0i3mjWrr1eONfPkyk1ziNtqqIHRBc-r1ZOafJncU-BjSbwtw'
+        }
+
+        params = {
+        "leaveDetails": {
+            "leaveId": 0,
+            "employeeId": 911,
+            "leaveTypeId": 3,
+            "fromDate": fromdatevalue+"T00:00:00.000Z",
+            "toDate": todatevalue+"T00:00:00.000Z",
+            "noOfDays": 1,
+            "leaveType": "General Leave",
+            "reason": "test",
+            "appliedLeaveDetails": [
+            {
+                "appliedLeaveDetailsID": 0,
+                "date": "2023-04-05T00:00:00.000Z",
+                "isFullDay": True,
+                "isFirstHalf": False,
+                "isSecondHalf": False,
+                "leaveId": 0,
+                "compensatoryOffId": 0,
+                "createdBy": 911
+            }
+            ],
+            "createdBy": 911,
+            "createdOn": "2023-04-04T06:41:49.405Z",
+            "modifiedBy": 911,
+            "modifiedOn": "NULL",
+            "isActive": True,
+            "grantEffectiveFromDate": "null",
+            "status": "Pending",
+            "isGrantLeave": False
+        },
+        "listOfDocuments": [],
+        "shiftId": 1
+        }
+        print(tracker.get_slot("fromdate"))
+        print(tracker.get_slot("todate"))
+        resp = requests.post(url, headers=headers,json = params).json()
+        dispatcher.utter_message(text=resp['statusText'])
+        print(resp['statusText'])
         return []
-        # This run function will be executed when "action_session_start" is
-        # triggered.
-        # The session should begin with a 'session_started' event
-        # events = [SessionStarted()]
-        # dispatcher.utter_message(
-        #     text="Hi! How can I help you?")
-        # events.append(ActionExecuted("action_listen"))
-        # return events

@@ -18,6 +18,7 @@ actions:
 entities:
 - fromdate
 - todate
+- daycount
 
 slots:
   fromdate:
@@ -32,12 +33,17 @@ slots:
     - type: from_entity
       entity: todate
       intent: From_date
-
+  daycount:
+   type: text
+   mappings:
+    - type: from_entity
+      entity: daycount
+      intent: leaves_count
 
 
 responses:
   utter_greet:
-  - text: "Hi,I am your HR Helpdesk Augmented Assistant \n What can I do for you?"
+  - text: "Hi,I am your HR Helpdesk Augmented Assistant \nWhat can I do for you?"
 
   utter_did_that_help:
   - text: "Did that help you?"
@@ -59,6 +65,9 @@ responses:
 
   utter_iamabot:
   - text: "I am a bot, powered by Rasa."
+
+  utter_empty:
+  - text: ""
 
 
 session_config:

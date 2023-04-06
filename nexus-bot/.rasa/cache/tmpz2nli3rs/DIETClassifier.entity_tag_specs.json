@@ -1,0 +1,28 @@
+[
+  {
+    "tag_name": "entity",
+    "ids_to_tags": {
+      "1": "B-fromdate",
+      "2": "I-fromdate",
+      "3": "L-fromdate",
+      "4": "U-fromdate",
+      "5": "B-todate",
+      "6": "I-todate",
+      "7": "L-todate",
+      "8": "U-todate",
+      "0": "O"
+    },
+    "tags_to_ids": {
+      "B-fromdate": 1,
+      "I-fromdate": 2,
+      "L-fromdate": 3,
+      "U-fromdate": 4,
+      "B-todate": 5,
+      "I-todate": 6,
+      "L-todate": 7,
+      "U-todate": 8,
+      "O": 0
+    },
+    "num_tags": 9
+  }
+]
