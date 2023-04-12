@@ -1,0 +1,75 @@
+version: "3.1"
+
+intents:
+  - greet
+  - goodbye
+  - affirm
+  - deny
+  - mood_great
+  - bot_challenge
+  - leaves_count
+  - Leave_info
+  - From_date
+
+actions:
+ - action_leave_info
+ - action_welcome
+
+entities:
+- dateValue
+- monthValue
+- daycount
+
+slots:
+  dateValue:
+    type: text
+    mappings:
+    - type: from_entity
+      entity: dateValue
+      intent: From_date
+  monthValue:
+   type: text
+   mappings:
+    - type: from_entity
+      entity: monthValue
+      intent: From_date
+  daycount:
+   type: text
+   mappings:
+    - type: from_entity
+      entity: daycount
+      intent: leaves_count
+
+
+responses:
+  utter_greet:
+  - text: "Hi,I am your HR Helpdesk Augmented Assistant \nWhat can I do for you?"
+
+  utter_did_that_help:
+  - text: "Did that help you?"
+
+  utter_leavesdayinfo:
+  - text: "For how many days would you like to apply?"
+
+  utter_fromdateinfo:
+  - text: "From which Date would you like to Apply?"
+
+  utter_feedback:
+  - text: "Is there anything else I can do for you?"
+
+  utter_goodbye:
+  - text: "Thank you,Bye"
+
+  utter_sorry:
+  - text: "sorry for that"
+
+  utter_iamabot:
+  - text: "I am a bot, powered by Rasa."
+
+  utter_empty:
+  - text: ""
+
+
+session_config:
+  session_expiration_time: 60
+  carry_over_slots_to_new_session: true

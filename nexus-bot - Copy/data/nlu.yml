@@ -1,0 +1,123 @@
+version: "3.1"
+
+nlu:
+- intent: greet
+  examples: |
+    - hey
+    - hello
+    - hi
+    - hello there
+    - good morning
+    - good evening
+    - moin
+    - hey there
+    - let's go
+    - hey dude
+    - goodmorning
+    - goodevening
+    - good afternoon
+
+- intent: goodbye
+  examples: |
+    - cu
+    - good by
+    - cee you later
+    - good night
+    - bye
+    - goodbye
+    - have a nice day
+    - see you around
+    - bye bye
+    - see you later
+
+- intent: affirm
+  examples: |
+    - yes i want to apply
+    - y
+    - indeed
+    - of course
+    - that sounds good
+    - correct
+    - yaa i want to apply
+
+- intent: deny
+  examples: |
+    - no
+    - no need
+    - n
+    - nothing
+    - never
+    - I don't think so
+    - don't like that
+    - no way
+    - not really
+    - bye
+
+- intent: leaves_count
+  examples: |
+    - i want [one](daycount) day leave
+    - i want [two](daycount) days
+    - i want [four](daycount) days
+    - [one](daycount) days
+    - [two](daycount) day
+    - [three](daycount) days
+
+# - intent: leaves_count
+#   examples: |
+#     - 1
+#     - 2
+#     - 3
+#     - 4
+#     - 5
+#     - one
+#     - two
+#     - three
+#     - four
+#     - five
+    
+- intent: From_date
+  examples: |
+    - from [9th](dateValue) [november](monthValue)
+    - apply from [26](dateValue) [may](monthValue)
+    - [6](dateValue) [march](monthValue)
+    - [8th](dateValue) [march](monthValue)
+    - from [12](dateValue) [june](monthValue)
+    - apply from [19](dateValue) [july](monthValue)
+    - [16th](dateValue) [april](monthValue)
+    - [30th](dateValue) [april](monthValue)
+
+- intent: Leave_info
+  examples: |
+    - Apply for leave
+    - i want to apply for leave
+    - Can you help me apply for leave, please?
+    - Could you guide me through the process of applying for leave?
+    - I want to apply for leave, how can you help me with that?
+    - Please help me to fill out a leave application form.
+    - How can I apply for leave through this chatbot?
+    - Can you please help me with the leave application process?
+
+- intent: mood_great
+  examples: |
+    - perfect
+    - great
+    - amazing
+    - feeling like a king
+    - wonderful
+    - I am feeling very good
+    - I am great
+    - I am amazing
+    - I am going to save the world
+    - super stoked
+    - extremely good
+    - so so perfect
+    - so good
+    - so perfect
+
+- intent: bot_challenge
+  examples: |
+    - are you a bot?
+    - are you a human?
+    - am I talking to a bot?
+    - am I talking to a human?
+
