@@ -55,7 +55,7 @@ responses:
   - text: "From which Date would you like to Apply?"
 
   utter_feedback:
-  - text: "Does this help?"
+  - text: "Is there anything else I can do for you?"
 
   utter_goodbye:
   - text: "Thank you,Bye"

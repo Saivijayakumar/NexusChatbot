@@ -42,6 +42,10 @@ from typing import Any, Text, Dict, List
 from rasa_sdk import Action, Tracker
 from rasa_sdk.executor import CollectingDispatcher
 import requests
+from datetime import datetime
+
+global AvailableLeaves
+AvailableLeaves = 0
 
 class ActionHelloWorld(Action):
 
@@ -61,9 +65,11 @@ class ActionHelloWorld(Action):
         }
 
         resp = requests.get(url+"1", headers=headers).json()
+        global AvailableLeaves
 
         for data in resp['data']:
             if data['leaveType'] == 'Old Earned Leave':
+                AvailableLeaves = data['availableLeaves']
                 print(f"you have {data['availableLeaves']} Avilable Leaves from {data['leaveType']}")
                 dispatcher.utter_message(text=f"you have {data['availableLeaves']} Avilable Leaves from {data['leaveType']}")
                 dispatcher.utter_message(text="Would you like to apply?")
@@ -79,12 +85,29 @@ class ActionWelcome(Action):
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
 
         print("Hello world")
-        # dispatcher.utter_message(text=tracker.get_slot("fromdate"))
-        # dispatcher.utter_message(text=tracker.get_slot("todate"))
-        #dispatcher.utter_message(text=tracker.get_slot("daycount"))
-        
-        fromdatevalue = '2023-04-05'
-        todatevalue = '2023-04-05'
+      
+        fromdatevalue = tracker.get_slot("fromdate")
+        todatevalue = tracker.get_slot("todate")
+
+        try:
+            fromdate = datetime.strptime(fromdatevalue, '%d/%m/%y')
+            todate = datetime.strptime(todatevalue, '%d/%m/%y')
+        except ValueError:
+            print("Invalid date format!")
+            dispatcher.utter_message(text="Invalid date format!")
+            return[]
+        else:
+            fromdatevalue = fromdate.strftime('%Y-%m-%d')
+            todatevalue = todate.strftime('%Y-%m-%d')
+
+        print(fromdatevalue)
+        print(todatevalue)
+        print("---------------------------")
+        print(tracker.get_slot("fromdate"))
+        print(tracker.get_slot("todate"))
+
+        # fromdatevalue = fromdatevalue #'2023-04-05'
+        # todatevalue = todatevalue #'2023-04-05'
         url = "https://nexusuat.tvsnext.io:1180/api/Leaves/InsertorUpdateApplyLeave"
 
 
@@ -126,9 +149,12 @@ class ActionWelcome(Action):
         "listOfDocuments": [],
         "shiftId": 1
         }
-        print(tracker.get_slot("fromdate"))
-        print(tracker.get_slot("todate"))
-        resp = requests.post(url, headers=headers,json = params).json()
-        dispatcher.utter_message(text=resp['statusText'])
-        print(resp['statusText'])
+        print(tracker.get_slot("daycount"))
+        RequestedLeaves = tracker.get_slot("daycount")
+        if int(RequestedLeaves) <= AvailableLeaves:
+            resp = requests.post(url, headers=headers,json = params).json()
+            dispatcher.utter_message(text=resp['statusText'])
+            print(resp['statusText'])
+        else:
+            dispatcher.utter_message(text=f"You have {AvailableLeaves} days but requested {RequestedLeaves} days \nTry Again")
         return []
