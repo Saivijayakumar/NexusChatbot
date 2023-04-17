@@ -1,0 +1,36 @@
+[
+  {
+    "tag_name": "entity",
+    "ids_to_tags": {
+      "1": "B-dateValue",
+      "2": "I-dateValue",
+      "3": "L-dateValue",
+      "4": "U-dateValue",
+      "5": "B-daycount",
+      "6": "I-daycount",
+      "7": "L-daycount",
+      "8": "U-daycount",
+      "9": "B-monthValue",
+      "10": "I-monthValue",
+      "11": "L-monthValue",
+      "12": "U-monthValue",
+      "0": "O"
+    },
+    "tags_to_ids": {
+      "B-dateValue": 1,
+      "I-dateValue": 2,
+      "L-dateValue": 3,
+      "U-dateValue": 4,
+      "B-daycount": 5,
+      "I-daycount": 6,
+      "L-daycount": 7,
+      "U-daycount": 8,
+      "B-monthValue": 9,
+      "I-monthValue": 10,
+      "L-monthValue": 11,
+      "U-monthValue": 12,
+      "O": 0
+    },
+    "num_tags": 13
+  }
+]
