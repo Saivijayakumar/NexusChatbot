@@ -132,7 +132,7 @@ from datetime import datetime, timedelta
 
 input_day = "6"
 input_month = "March"
-date = 1
+date = 0
 fromdate_date = (datetime.strptime(input_day + " " + input_month + " 2023", "%d %B %Y"))
 fromdate=fromdate_date.strftime("%Y-%m-%d")
 todate = (datetime.strptime(input_day + " " + input_month + " 2023", "%d %B %Y") + timedelta(days=date)).strftime("%Y-%m-%d")
@@ -156,9 +156,9 @@ day_number = input_day[:-2]
 # Print the result
 print(day_number)
 
-a = "one"
+a = "1"
 
 if a.isdigit():
-    print(int(a))
+    print("integer")
 else:
     print("not integer")

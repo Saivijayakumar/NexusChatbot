@@ -29,6 +29,7 @@ nlu:
     - see you around
     - bye bye
     - see you later
+    - nothing
 
 - intent: affirm
   examples: |
@@ -62,35 +63,35 @@ nlu:
     - [one](daycount) days
     - [two](daycount) day
     - [three](daycount) days
+    - [1](daycount) days
+    - [2](daycount) day
+    - [3](daycount) days
 
-# - intent: leaves_count
-#   examples: |
-#     - 1
-#     - 2
-#     - 3
-#     - 4
-#     - 5
-#     - one
-#     - two
-#     - three
-#     - four
-#     - five
-    
+   
 - intent: From_date
   examples: |
     - from [9th](dateValue) [november](monthValue)
     - apply from [26](dateValue) [may](monthValue)
     - [6](dateValue) [march](monthValue)
-    - [8th](dateValue) [march](monthValue)
+    - [8th](dateValue) [january](monthValue)
     - from [12](dateValue) [june](monthValue)
     - apply from [19](dateValue) [july](monthValue)
     - [16th](dateValue) [april](monthValue)
     - [30th](dateValue) [april](monthValue)
+    - from [2nd](dateValue) [november](monthValue)
+    - apply from [3rd](dateValue) [february](monthValue)
+    - [6](dateValue) [march](monthValue)
+    - [1st](dateValue) [march](monthValue)
+    - from [12](dateValue) [june](monthValue)
+    - apply from [3rd](dateValue) [july](monthValue)
+    - [18](dateValue) [january](monthValue)
+    - [30th](dateValue) [february](monthValue)
 
 - intent: Leave_info
   examples: |
     - Apply for leave
     - i want to apply for leave
+    - how many leaves i have
     - Can you help me apply for leave, please?
     - Could you guide me through the process of applying for leave?
     - I want to apply for leave, how can you help me with that?
