@@ -1,0 +1,53 @@
+<section class="msger" #scrollMe>
+
+  <main class="msger-chat">
+    <div *ngFor="let msg of messages">
+      <div class="msg left-msg" *ngIf="msg.from=='bot'">
+        <div class="msg-img" style="background-image: url(https://www.w3schools.com/howto/img_avatar.png)"></div>
+
+        <div class="msg-bubble">
+          <div class="msg-info">
+            <div class="msg-info-name">Bot</div>
+            <div class="msg-info-time">12:45</div>
+          </div>
+
+          <div class="msg-text" *ngIf="msg.text">
+            {{msg.text}}
+          </div>
+          <div class="msg-text" *ngIf="msg.image">
+            <img [src]="msg.image" style="width: 300px;">
+          </div>
+        </div>
+      </div>
+
+      <div class="msg right-msg" *ngIf="msg.from=='me'">
+        <div class="msg-img" style="background-image: url(https://www.w3schools.com/howto/img_avatar.png)"></div>
+
+        <div class="msg-bubble">
+          <div class="msg-info">
+            <div class="msg-info-name">Atul</div>
+            <div class="msg-info-time">12:46</div>
+          </div>
+
+          <div class="msg-text">
+            {{msg.text}}
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+  <form class="msger-inputarea" [formGroup]="chatForm">
+    <input type="text" class="msger-input" placeholder="Enter your message..." formControlName="message">
+
+    <button type="submit" (click)="onSubmit()" class="msger-send-btn">Send</button>
+    <button (click)="startRecording()" class="msger-send-btn">Mic</button>
+    <!-- <button id="speech" class="btnnew">
+      <div class="pulse-ring"></div>
+      <i class="fa fa-microphone" aria-hidden="true"></i>
+    </button> -->
+
+
+  </form>
+
+</section>
