@@ -187,6 +187,6 @@ class ActionWelcome(Action):
             print(resp['statusText'])
             print("Future day")
         else:
-            dispatcher.utter_message(text=f"You have {AvailableLeaves} days but requested {RequestedLeaves} days.\n Make sure you are applying for future days. \nTry Again")
+            dispatcher.utter_message(text=f"You have {AvailableLeaves} days but requested {RequestedLeaves} days.\nMake sure you are applying for future days. \nTry Again")
         
         return []
