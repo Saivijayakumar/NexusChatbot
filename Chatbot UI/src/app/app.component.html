@@ -41,12 +41,10 @@
     <input type="text" class="msger-input" placeholder="Enter your message..." formControlName="message">
 
     <button type="submit" (click)="onSubmit()" class="msger-send-btn">Send</button>
-    <button (click)="startRecording()" class="msger-send-btn">Mic</button>
-    <!-- <button id="speech" class="btnnew">
-      <div class="pulse-ring"></div>
-      <i class="fa fa-microphone" aria-hidden="true"></i>
-    </button> -->
-
+    <div  *ngIf="!showMic" (click)="startRecording()" ><mat-icon class="mic">mic</mat-icon></div>
+    <div *ngIf="showMic">
+      Recording...
+    </div>
 
   </form>
 

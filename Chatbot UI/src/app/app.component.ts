@@ -1,4 +1,5 @@
 import { Component, ViewChild, ElementRef } from '@angular/core';
+import {MatIconModule} from '@angular/material/icon';
 import {
   FormGroup,
   FormControl,
@@ -16,7 +17,7 @@ export class AppComponent {
   @ViewChild('scrollMe') private chatScrollContainer: ElementRef<any>;
   messages: any = [];
   chatForm: FormGroup;
-
+  showMic:Boolean = false;
   public isUserSpeaking: boolean = false;
   isStoppedSpeechRecog = false;
 
@@ -36,6 +37,7 @@ export class AppComponent {
   }
 
   onSubmit() {
+    this.showMic = false;
     this.messages.push({
       text: this.chatForm.value.message,
       from: 'me',
@@ -108,6 +110,7 @@ export class AppComponent {
    * @description Function to enable voice input.
    */
   startRecording() {
+    this.showMic = true;
     this.isUserSpeaking = true;
     this.backend.start();
     this.chatForm.controls['message'].reset();
