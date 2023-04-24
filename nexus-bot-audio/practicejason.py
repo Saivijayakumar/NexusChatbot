@@ -52,19 +52,40 @@ print(leavetype_dict)
 print(len(leavetype_dict))
 
 
+print("___________________start____________________")
+leave_dict = {}  # create an empty dictionary
 
-# leave_dict = {}  # create an empty dictionary
+# add the input values to the dictionary dynamically
+leave_dict['General Leave'] = 5
+leave_dict['Leave without pay'] = 1
+leave_dict['Sick leave'] = 2
 
-# # add the input values to the dictionary dynamically
-# leave_dict['General Leave'] = 5
-# leave_dict['Leave without pay'] = 1
-# leave_dict['Sick leave'] = 2
+# print the resulting dictionary
+print(leave_dict)
+print("------")
+key, value = next(iter(leave_dict.items()))
+print(f"{key}: {value}")
+print(leave_dict)
+#leave_dict = {'General Leave': 5, 'Leave without pay': 1, 'Sick leave': 2}
 
-# # print the resulting dictionary
-# print(leave_dict)
+# iterate over the key-value pairs in the dictionary
+for key, value in leave_dict.items():
+    print(key + ": " + str(value))
 
-# leave_dict = {'General Leave': 5, 'Leave without pay': 1, 'Sick leave': 2}
+# --------------------------------
+import Levenshtein
+#pip install python-Levenshtein
+leave_dict = {'General Leave': 5, 'Leave without pay': 1, 'Sick leave': 2}
 
-# # iterate over the key-value pairs in the dictionary
-# for key, value in leave_dict.items():
-#     print(key + ": " + str(value))
+input_str = "leave without" # the input string
+
+# calculate the Levenshtein distance between the input string and each key in the leave_dict
+distances = {k: Levenshtein.distance(input_str.lower(), k.lower()) for k in leave_dict.keys()}
+
+# find the key with the minimum Levenshtein distance
+closest_key = min(distances, key=distances.get)
+
+# calculate the matching percentage of the closest key
+matching_percentage = (1 - (distances[closest_key] / len(closest_key))) * 100
+
+print(f"The closest key in leave_dict for '{input_str}' is '{closest_key}' with a matching percentage of {matching_percentage:.2f}%")

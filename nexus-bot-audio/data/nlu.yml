@@ -55,6 +55,20 @@ nlu:
     - not really
     - bye
 
+- intent: leave_type
+  examples: |
+    - select [general leave](LeaveType) 
+    - go with [general leave](LeaveType)
+    - i want [Leave Without Pay](LeaveType)
+    - [leave without pay](LeaveType)
+    - [Covid Leave](LeaveType)
+    - [compensatory off](LeaveType)
+    - [bereavement](LeaveType)
+    - [Work From Home](LeaveType)
+    - [optional holiday](LeaveType)
+    - [Relocation](LeaveType)
+    - [Emergency GL](LeaveType)
+
 - intent: leaves_count
   examples: |
     - i want [one](daycount) day leave
@@ -90,6 +104,7 @@ nlu:
 - intent: Leave_info
   examples: |
     - Apply for leave
+    - apply leave
     - i want to apply for leave
     - how many leaves i have
     - Can you help me apply for leave, please?

@@ -2,32 +2,25 @@ version: "3.1"
 
 stories:
 
-# - story: happy path
+# - story: training_leavetype
 #   steps:
-#   - intent: greet
-#   - action: utter_greet
-#   - intent: Leave_info
-#   - action: action_leave_info
-#   - intent: affirm
+#   - intent: leave_type
+#   - action: action_training
 #   - action: utter_leavesdayinfo
-#   - intent: leaves_count
-#   - action: utter_fromdateinfo
-#   - intent: From_date
-#   - action: utter_empty
-#   - action: action_welcome
-#   - action: utter_feedback
-#   - intent: affirm
-#   - action: utter_goodbye
+
 - story: happy path part 1
   steps:
   - intent: greet
   - action: utter_greet
   - intent: Leave_info
   - action: action_leave_info
-  - intent: affirm
+
+- story: happy path part 2
+  steps:
+  - intent: leave_type
   - action: utter_leavesdayinfo
   
-- story: happy path part 2
+- story: happy path part 3
   steps:
   - intent: leaves_count
   - action: utter_fromdateinfo

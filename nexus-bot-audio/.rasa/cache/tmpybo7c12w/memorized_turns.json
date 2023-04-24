@@ -1,0 +1,8 @@
+{
+  "lookup": {
+    "eJyLrq6NBQAEOAGx": "action_listen",
+    "eJyLrq7VUaguKEoti09MLsnMz7NSqIYw4vMSc1OtFKCcnMziktQ8oNrS4tQioJrMPCC3xEohJzWxLDW+pLIgtbY2FgB5Kx2c": "action_training",
+    "eJyLrq7VUaguKEoti09MLsnMz7NSqIYw4vMSc1OtFKCcnMziktQ8oNrS4tQioJrMPCC3xEohJzWxLDW+pLIgtZY4g0qKEjPzMvPS8RsVCwBaITpU": "utter_leavesdayinfo",
+    "eJyljEEKgCAQAL+yD+gFfiVCltpiwTbRVRDx70l1jqDbDAwz1jZA9YGyxVn5EAP1Biu4k4FHHEcl6W2KFHrD0lUNOMJMVoun9m2kAVlYtj+rpErBXn1csLCsx/tuOgEPNFjQ": "action_listen"
+  }
+}

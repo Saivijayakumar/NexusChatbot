@@ -10,15 +10,18 @@ intents:
   - leaves_count
   - Leave_info
   - From_date
+  - leave_type
 
 actions:
  - action_leave_info
  - action_welcome
+ - action_training
 
 entities:
 - dateValue
 - monthValue
 - daycount
+- LeaveType
 
 slots:
   dateValue:
@@ -39,11 +42,17 @@ slots:
     - type: from_entity
       entity: daycount
       intent: leaves_count
+  LeaveType:
+   type: text
+   mappings:
+    - type: from_entity
+      entity: LeaveType
+      intent: leave_type
 
 
 responses:
   utter_greet:
-  - text: "Hi,I am your HR Helpdesk Augmented Assistant \nWhat can I do for you?"
+  - text: "Hi,I am your HR Helpdesk Augmented Assistant \nHere are the things you can do with the assistant \n* Apply Leave"
 
   utter_did_that_help:
   - text: "Did that help you?"

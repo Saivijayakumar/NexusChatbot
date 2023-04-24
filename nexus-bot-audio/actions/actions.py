@@ -44,9 +44,11 @@ from rasa_sdk.executor import CollectingDispatcher
 import requests
 from datetime import datetime, timedelta, timezone
 from word2number import w2n
+import Levenshtein
 
-global AvailableLeaves
+global AvailableLeaves,leavetype_dict
 AvailableLeaves = 0
+
 
 class ActionHelloWorld(Action):
 
@@ -77,14 +79,29 @@ class ActionHelloWorld(Action):
         request_obj = requests.post(url, headers=headers,json = params)
         resp = request_obj.json()
         print(request_obj.status_code)
-        global AvailableLeaves
+        global AvailableLeaves,leavetype_dict
 
-        for data in resp['data']['employeeAvailableLeaveDetails']:
-            if data['leaveType'] == 'General Leave':
-                AvailableLeaves = data['displayBalanceLeave']
-                print(f"you have {data['displayBalanceLeave']} Avilable Leaves from {data['leaveType']}")
-                dispatcher.utter_message(text=f"you have {data['displayBalanceLeave']} Avilable Leaves from {data['leaveType']}")
-                dispatcher.utter_message(text="Would you like to apply?")
+        # ------------------
+        leavetype_dict = {data['leaveType']: data['displayBalanceLeave'] for data in resp['data']['employeeAvailableLeaveDetails'] if data['displayBalanceLeave'] > 0}
+
+
+        if len(leavetype_dict) == 1:
+            key, value = next(iter(leavetype_dict.items()))
+            print(f"{key}: {value}")
+            print(f"You have {value} {key} available, would you like to apply now.")
+            dispatcher.utter_message(text=f"You have {value} {key} available, would you like to apply now.")
+            # dispatcher.utter_message(text="Would you like to apply?")
+        elif len(leavetype_dict) > 1:
+            dispatcher.utter_message(text=f"Below are the list of available leaves. Which one would you like to apply?")
+            print("Below are the list of available leaves. Which one would you like to apply?")
+            for key, value in leavetype_dict.items():
+                print(f"{key}: {value}")
+                dispatcher.utter_message(text=f"{key}: {value}")
+            # dispatcher.utter_message(text="Would you like to apply?")
+        else:
+            print("You have no leave balance. I am sorry you can't avail a leave now.\n However, please note that your General Leaves are added incrementally overtime. please check back after sometime. Would you like more info regarding this?")
+            dispatcher.utter_message(text="You have no leave balance. I am sorry you can't avail a leave now.\n However, please note that your General Leaves are added incrementally overtime. please check back after sometime. Would you like more info regarding this?")
+            # dispatcher.utter_message(text="Would you like to apply?")
         return []
 
 class ActionWelcome(Action):
@@ -97,6 +114,20 @@ class ActionWelcome(Action):
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
         
         print("------------start-----------------------")
+
+        print(f"Leave Type = {tracker.get_slot('LeaveType')}")
+        Leavetype_id_dict = {'General Leave': 3, 'Leave Without Pay': 4}
+        print(leavetype_dict)
+        input_leave_type = tracker.get_slot('LeaveType')
+        distances = {k: Levenshtein.distance(input_leave_type.lower(), k.lower()) for k in leavetype_dict.keys()}
+        closest_key = min(distances, key=distances.get)
+        AvailableLeaves = leavetype_dict[closest_key]
+        print(Leavetype_id_dict)
+        print(closest_key)
+        leavetype_id = Leavetype_id_dict[closest_key]
+        print(f"user select leave type ::: {closest_key} {AvailableLeaves}")
+
+        print("leave type id ::: {Leavetype_id_dict} -->{leavetype_id}")
         print(f"Input Days count = {tracker.get_slot('daycount')}")
         daycount_str = str(tracker.get_slot('daycount'))
         print(daycount_str)
@@ -105,7 +136,7 @@ class ActionWelcome(Action):
             print("condition true it is integer")
         else:
             RequestedLeaves = w2n.word_to_num(daycount_str)
-            print("condition false it is string")
+            print(f"condition false it is string")
 
         print(f"Requested Leaves = {RequestedLeaves}")
         print(f"Input Day = {tracker.get_slot('dateValue')}")
@@ -130,7 +161,7 @@ class ActionWelcome(Action):
         print(f"From date = {fromdate}")
         print(f"To date = {todate}")
         today = datetime.now().date()
-        today_str = today.strftime("%Y-%m-%d")
+        # today_str = today.strftime("%Y-%m-%d")
         print(f"Today = {today}")
         now = datetime.now(timezone.utc)
         date_string = now.strftime('%Y-%m-%dT%H:%M:%S.%f')[:-4] + 'Z'
@@ -147,11 +178,11 @@ class ActionWelcome(Action):
             "leaveDetails": {
                 "leaveId": 0,
                 "employeeId": 245,
-                "leaveTypeId": 3,
+                "leaveTypeId": leavetype_id,
                 "fromDate": fromdate+"T00:00:00.000Z",
                 "toDate": todate+"T00:00:00.000Z",
                 "noOfDays": RequestedLeaves,
-                "leaveType": "General Leave",
+                "leaveType": closest_key,
                 "reason": "testing for chatbot",
                 "appliedLeaveDetails": [
                     {
@@ -183,10 +214,24 @@ class ActionWelcome(Action):
             resp = requests.post(url, headers=headers,json = params).json()
             dispatcher.utter_message(text=resp['statusText'])
             if len("Leave submitted successfully.") == len(resp['statusText']):
-                dispatcher.utter_message(text=f"You have {AvailableLeaves - int(RequestedLeaves)} General Leave available.")
+                dispatcher.utter_message(text=f"You have {AvailableLeaves - int(RequestedLeaves)} {closest_key} available.")
             print(resp['statusText'])
             print("Future day")
         else:
             dispatcher.utter_message(text=f"You have {AvailableLeaves} days but requested {RequestedLeaves} days.\nMake sure you are applying for future days. \nTry Again")
+        
+        return []
+
+class trainingClass(Action):
+
+    def name(self) -> Text:
+        return "action_training"
+
+    def run(self, dispatcher: CollectingDispatcher,
+            tracker: Tracker,
+            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+        
+
+        print(f"Leave Type = {tracker.get_slot('LeaveType')}")
         
         return []

@@ -1,0 +1,44 @@
+[
+  {
+    "tag_name": "entity",
+    "ids_to_tags": {
+      "1": "B-LeaveType",
+      "2": "I-LeaveType",
+      "3": "L-LeaveType",
+      "4": "U-LeaveType",
+      "5": "B-dateValue",
+      "6": "I-dateValue",
+      "7": "L-dateValue",
+      "8": "U-dateValue",
+      "9": "B-daycount",
+      "10": "I-daycount",
+      "11": "L-daycount",
+      "12": "U-daycount",
+      "13": "B-monthValue",
+      "14": "I-monthValue",
+      "15": "L-monthValue",
+      "16": "U-monthValue",
+      "0": "O"
+    },
+    "tags_to_ids": {
+      "B-LeaveType": 1,
+      "I-LeaveType": 2,
+      "L-LeaveType": 3,
+      "U-LeaveType": 4,
+      "B-dateValue": 5,
+      "I-dateValue": 6,
+      "L-dateValue": 7,
+      "U-dateValue": 8,
+      "B-daycount": 9,
+      "I-daycount": 10,
+      "L-daycount": 11,
+      "U-daycount": 12,
+      "B-monthValue": 13,
+      "I-monthValue": 14,
+      "L-monthValue": 15,
+      "U-monthValue": 16,
+      "O": 0
+    },
+    "num_tags": 17
+  }
+]
