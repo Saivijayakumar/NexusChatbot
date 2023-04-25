@@ -11,6 +11,7 @@ intents:
   - Leave_info
   - From_date
   - leave_type
+  - halfday_intent
 
 actions:
  - action_leave_info
@@ -22,6 +23,7 @@ entities:
 - monthValue
 - daycount
 - LeaveType
+
 
 slots:
   dateValue:
@@ -50,9 +52,10 @@ slots:
       intent: leave_type
 
 
+
 responses:
   utter_greet:
-  - text: "Hi,I am your HR Helpdesk Augmented Assistant \nHere are the things you can do with the assistant \n* Apply Leave"
+  - text: "Hi,I am your HR Helpdesk Augmented Assistant \n Here are the things you can do with the assistant\\\n \n* Apply Leave"
 
   utter_did_that_help:
   - text: "Did that help you?"
@@ -68,6 +71,9 @@ responses:
 
   utter_goodbye:
   - text: "Thank you,Bye"
+
+  utter_halfday:
+  - text: "First half or second half?"
 
   utter_sorry:
   - text: "sorry for that"

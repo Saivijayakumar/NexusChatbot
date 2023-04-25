@@ -37,9 +37,12 @@ if len(leavetype_dict) == 1:
     print(f"{key}: {value}")
     print(f"You have {value} {key} available, would you like to apply now.")
 elif len(leavetype_dict) > 1:
+    leave_msg = "Below are the list of available leaves. Which one would you like to apply?"
     print("Below are the list of available leaves. Which one would you like to apply?")
     for key, value in leavetype_dict.items():
         print(f"{key}: {value}")
+        leave_msg = leave_msg + f" \n{key}: {value} " 
+    print(leave_msg)
 else:
     print("You have no leave balance. I am sorry you can't avail a leave now.\n However, please note that your General Leaves are added incrementally overtime. please check back after sometime. Would you like more info regarding this?")
 
@@ -73,19 +76,25 @@ for key, value in leave_dict.items():
     print(key + ": " + str(value))
 
 # --------------------------------
-import Levenshtein
-#pip install python-Levenshtein
-leave_dict = {'General Leave': 5, 'Leave without pay': 1, 'Sick leave': 2}
+# import Levenshtein
+# #pip install python-Levenshtein
+# leave_dict = {'General Leave': 5, 'Leave without pay': 1, 'Sick leave': 2}
 
-input_str = "leave without" # the input string
+# input_str = "leave without" # the input string
 
-# calculate the Levenshtein distance between the input string and each key in the leave_dict
-distances = {k: Levenshtein.distance(input_str.lower(), k.lower()) for k in leave_dict.keys()}
+# # calculate the Levenshtein distance between the input string and each key in the leave_dict
+# distances = {k: Levenshtein.distance(input_str.lower(), k.lower()) for k in leave_dict.keys()}
 
-# find the key with the minimum Levenshtein distance
-closest_key = min(distances, key=distances.get)
+# # find the key with the minimum Levenshtein distance
+# closest_key = min(distances, key=distances.get)
 
-# calculate the matching percentage of the closest key
-matching_percentage = (1 - (distances[closest_key] / len(closest_key))) * 100
+# # calculate the matching percentage of the closest key
+# matching_percentage = (1 - (distances[closest_key] / len(closest_key))) * 100
 
-print(f"The closest key in leave_dict for '{input_str}' is '{closest_key}' with a matching percentage of {matching_percentage:.2f}%")
+# print(f"The closest key in leave_dict for '{input_str}' is '{closest_key}' with a matching percentage of {matching_percentage:.2f}%")
+
+
+
+print(1-int(0.5))
+print(int(0.5))
+print(1-0.5)

@@ -30,6 +30,18 @@ stories:
   - intent: deny
   - action: utter_goodbye
 
+- story: half_day path
+  steps:
+  - intent: halfday_intent
+  - action: utter_halfday
+  - intent: leaves_count
+  - action: utter_fromdateinfo
+  - intent: From_date
+  - action: action_welcome
+  - action: utter_feedback
+  - intent: deny
+  - action: utter_goodbye
+
 # - story: happy path
 #   steps:
 #   - intent: leaves_count

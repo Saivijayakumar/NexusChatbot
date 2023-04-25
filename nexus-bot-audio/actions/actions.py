@@ -76,6 +76,7 @@ class ActionHelloWorld(Action):
             "LocationId": 1,
             "dateOfJoining": "2021-06-21T00:00:00"
         }
+
         request_obj = requests.post(url, headers=headers,json = params)
         resp = request_obj.json()
         print(request_obj.status_code)
@@ -90,19 +91,18 @@ class ActionHelloWorld(Action):
             print(f"{key}: {value}")
             print(f"You have {value} {key} available, would you like to apply now.")
             dispatcher.utter_message(text=f"You have {value} {key} available, would you like to apply now.")
-            # dispatcher.utter_message(text="Would you like to apply?")
         elif len(leavetype_dict) > 1:
-            dispatcher.utter_message(text=f"Below are the list of available leaves. Which one would you like to apply?")
+            leave_msg = f"Below are the list of available leaves. Which one would you like to apply?"
             print("Below are the list of available leaves. Which one would you like to apply?")
             for key, value in leavetype_dict.items():
                 print(f"{key}: {value}")
-                dispatcher.utter_message(text=f"{key}: {value}")
-            # dispatcher.utter_message(text="Would you like to apply?")
+                leave_msg = leave_msg + f" \n{key}: {value} "
+            dispatcher.utter_message(text=leave_msg)
         else:
             print("You have no leave balance. I am sorry you can't avail a leave now.\n However, please note that your General Leaves are added incrementally overtime. please check back after sometime. Would you like more info regarding this?")
             dispatcher.utter_message(text="You have no leave balance. I am sorry you can't avail a leave now.\n However, please note that your General Leaves are added incrementally overtime. please check back after sometime. Would you like more info regarding this?")
-            # dispatcher.utter_message(text="Would you like to apply?")
         return []
+
 
 class ActionWelcome(Action):
 
@@ -114,9 +114,41 @@ class ActionWelcome(Action):
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
         
         print("------------start-----------------------")
-
+        daycount = tracker.get_slot('daycount')
+        if daycount.lower() == "first":
+            RequestedLeaves = 0.5
+            isFullDay= False
+            isFirstHalf= True
+            isSecondHalf= False
+        elif daycount.lower() == "second":
+            RequestedLeaves = 0.5
+            isFullDay= False
+            isFirstHalf= False
+            isSecondHalf= True
+        else:
+            print(f"Input Days count = {daycount}")
+            daycount_str = str(daycount)
+            print(daycount_str)
+            isFullDay= True
+            isFirstHalf= False
+            isSecondHalf= False
+            
+            if daycount_str.isdigit():
+                RequestedLeaves = int(daycount_str)
+                print("condition true it is integer")
+            else:
+                RequestedLeaves = w2n.word_to_num(daycount_str)
+                print(f"condition false it is string")
+                
+                
+        print("------leave type---------")
         print(f"Leave Type = {tracker.get_slot('LeaveType')}")
-        Leavetype_id_dict = {'General Leave': 3, 'Leave Without Pay': 4}
+        # leave type and its id
+        Leavetype_id_dict = {'General Leave': 3, 'Leave Without Pay': 4,
+         'Old Earned Leave' : 2, 'Miscarriage Leave' : 5,'Covid Leave' : 7,
+        'Compensatory off' : 8,'Permission' : 9,'Earned Leave': 10,'Special or Causal Leave': 11,'Sick Leave': 12,'Bereavement Leave': 13,'Paternity Leave' : 14,
+        'Special Leave' : 15,'Flexi - Work From Home' : 16,'Optional Holiday' : 17,'Maternity Leave' : 18,'Emergency GL' : 19,'Relocation Leave' : 21,'Testing' : 24,'Restricted Leave' : 28,'Summer leave' : 29
+        }
         print(leavetype_dict)
         input_leave_type = tracker.get_slot('LeaveType')
         distances = {k: Levenshtein.distance(input_leave_type.lower(), k.lower()) for k in leavetype_dict.keys()}
@@ -127,16 +159,9 @@ class ActionWelcome(Action):
         leavetype_id = Leavetype_id_dict[closest_key]
         print(f"user select leave type ::: {closest_key} {AvailableLeaves}")
 
-        print("leave type id ::: {Leavetype_id_dict} -->{leavetype_id}")
-        print(f"Input Days count = {tracker.get_slot('daycount')}")
-        daycount_str = str(tracker.get_slot('daycount'))
-        print(daycount_str)
-        if daycount_str.isdigit():
-            RequestedLeaves = int(daycount_str)
-            print("condition true it is integer")
-        else:
-            RequestedLeaves = w2n.word_to_num(daycount_str)
-            print(f"condition false it is string")
+        print(f"leave type id ::: {Leavetype_id_dict} --> {leavetype_id}")
+
+        print("------end leave type ----------")       
 
         print(f"Requested Leaves = {RequestedLeaves}")
         print(f"Input Day = {tracker.get_slot('dateValue')}")
@@ -153,7 +178,12 @@ class ActionWelcome(Action):
 
         input_day = Datevalue
         input_month = tracker.get_slot("monthValue")
-        date = RequestedLeaves - 1
+
+        if RequestedLeaves == 0.5:
+            date = 0
+        else:
+            date = RequestedLeaves - 1
+
         fromdate_datetime = (datetime.strptime(input_day + " " + input_month + " 2023", "%d %B %Y"))
         fromdate = fromdate_datetime.strftime("%Y-%m-%d")
         todate = (datetime.strptime(input_day + " " + input_month + " 2023", "%d %B %Y") + timedelta(days=date)).strftime("%Y-%m-%d")
@@ -188,9 +218,9 @@ class ActionWelcome(Action):
                     {
                         "appliedLeaveDetailsID": 0,
                         "date": fromdate+"T00:00:00.000Z",
-                        "isFullDay": True,
-                        "isFirstHalf": False,
-                        "isSecondHalf": False,
+                        "isFullDay": isFullDay,
+                        "isFirstHalf": isFirstHalf,
+                        "isSecondHalf": isSecondHalf,
                         "leaveId": 0,
                         "compensatoryOffId": 0,
                         "createdBy": 245
@@ -214,7 +244,8 @@ class ActionWelcome(Action):
             resp = requests.post(url, headers=headers,json = params).json()
             dispatcher.utter_message(text=resp['statusText'])
             if len("Leave submitted successfully.") == len(resp['statusText']):
-                dispatcher.utter_message(text=f"You have {AvailableLeaves - int(RequestedLeaves)} {closest_key} available.")
+                # dispatcher.utter_message(text=f"")
+                dispatcher.utter_message(text=f"You have {AvailableLeaves - (RequestedLeaves)} {closest_key} available.")
             print(resp['statusText'])
             print("Future day")
         else:
@@ -233,5 +264,6 @@ class trainingClass(Action):
         
 
         print(f"Leave Type = {tracker.get_slot('LeaveType')}")
+        print(tracker.get_slot('daycount'))
         
         return []

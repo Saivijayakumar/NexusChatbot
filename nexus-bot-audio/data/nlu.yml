@@ -80,7 +80,20 @@ nlu:
     - [1](daycount) days
     - [2](daycount) day
     - [3](daycount) days
+    - [first](daycount) half
+    - [second](daycount) half
+    - i want [first](daycount) half
+    - go with [second](daycount) half
+    - i want only [second](daycount) half
 
+
+- intent: halfday_intent
+  examples: |
+   - half day
+   - i want half day only 
+   - i want half day
+   - half
+   
    
 - intent: From_date
   examples: |
