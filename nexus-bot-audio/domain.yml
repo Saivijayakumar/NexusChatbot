@@ -18,7 +18,8 @@ intents:
 actions:
  - action_leave_info
  - action_welcome
- - action_training
+ - action_checkin
+ - action_checkout
 
 entities:
 - dateValue
@@ -90,7 +91,7 @@ responses:
   - text: "I am a bot, powered by Rasa."
 
   utter_checkin:
-  - text: "Are you checking in from office or remote?"
+  - text: "Are you checking in from office or remote or Client Site?"
 
 
 session_config:

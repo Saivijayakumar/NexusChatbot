@@ -45,6 +45,8 @@ import requests
 from datetime import datetime, timedelta, timezone
 from word2number import w2n
 import Levenshtein
+import json
+import difflib
 
 global AvailableLeaves,leavetype_dict
 AvailableLeaves = 0
@@ -186,8 +188,17 @@ class ActionWelcome(Action):
 
         fromdate_datetime = (datetime.strptime(input_day + " " + input_month + " 2023", "%d %B %Y"))
         fromdate = fromdate_datetime.strftime("%Y-%m-%d")
-        todate = (datetime.strptime(input_day + " " + input_month + " 2023", "%d %B %Y") + timedelta(days=date)).strftime("%Y-%m-%d")
+
+        date_obj = datetime.strptime(input_day + " " + input_month + " 2023", "%d %B %Y") 
+        # help to remove weekdays
+        for i in range(date):
+            next_date = date_obj + timedelta(days=1)
+            while next_date.weekday() in [5, 6]:
+                next_date += timedelta(days=1)
+            date_obj = next_date
         
+        todate = date_obj.strftime("%Y-%m-%d")
+
         print(f"From date = {fromdate}")
         print(f"To date = {todate}")
         today = datetime.now().date()
@@ -196,7 +207,37 @@ class ActionWelcome(Action):
         now = datetime.now(timezone.utc)
         date_string = now.strftime('%Y-%m-%dT%H:%M:%S.%f')[:-4] + 'Z'
         print("------------------End-----------------")
-        
+        print("------------------start experiment-----------------------------------------------------------------------------")
+
+        date_format = "%Y-%m-%d"
+        start_date = datetime.strptime(fromdate, date_format).date()
+        end_date = datetime.strptime(todate, date_format).date()
+        print(start_date)
+        print(end_date)
+        def create_leave_dict(date, is_full_day, is_first_half, is_second_half):
+            return {
+                "appliedLeaveDetailsID": 0,
+                "date": date.isoformat() + "T00:00:00.000Z",
+                "isFullDay": is_full_day,
+                "isFirstHalf": is_first_half,
+                "isSecondHalf": is_second_half,
+                "leaveId": 0,
+                "compensatoryOffId": 0,
+                "createdBy": 245
+            }
+
+        leave_list = []
+
+        for date in range((end_date - start_date).days + 1):
+            current_date = start_date + + timedelta(days=date)
+
+            if current_date.weekday() < 5:
+                leave_list.append(create_leave_dict(current_date, isFullDay, isFirstHalf, isSecondHalf))
+            else:
+                continue
+
+        print("------------------End experiment-------------------------------------------------------------------------------------------")
+
         url = "https://nexusuat.tvsnext.io:1180/api/Leaves/InsertorUpdateApplyLeave"
 
 
@@ -214,18 +255,7 @@ class ActionWelcome(Action):
                 "noOfDays": RequestedLeaves,
                 "leaveType": closest_key,
                 "reason": "testing for chatbot",
-                "appliedLeaveDetails": [
-                    {
-                        "appliedLeaveDetailsID": 0,
-                        "date": fromdate+"T00:00:00.000Z",
-                        "isFullDay": isFullDay,
-                        "isFirstHalf": isFirstHalf,
-                        "isSecondHalf": isSecondHalf,
-                        "leaveId": 0,
-                        "compensatoryOffId": 0,
-                        "createdBy": 245
-                    }
-                ],
+                "appliedLeaveDetails": leave_list,
                 "createdBy": 245,
                 "createdOn": date_string,
                 "modifiedBy": 245,
@@ -239,10 +269,18 @@ class ActionWelcome(Action):
             "shiftId": 1
         }
         
-        
+        print(params)
+
+        if len(leave_list) == 0 :
+            dispatcher.utter_message(text="You applied for weekdays. check again.")
+            return []
+
         if int(RequestedLeaves) <= AvailableLeaves and fromdate_datetime.date() >= today and int(RequestedLeaves) <= 6:
-            resp = requests.post(url, headers=headers,json = params).json()
+            resp_leave = requests.post(url, headers=headers,json = params)
+            resp = resp_leave.json()
+            print(resp_leave.status_code)
             dispatcher.utter_message(text=resp['statusText'])
+            print(resp['statusText'])
             if len("Leave submitted successfully.") == len(resp['statusText']):
                 # dispatcher.utter_message(text=f"")
                 dispatcher.utter_message(text=f"You have {AvailableLeaves - (RequestedLeaves)} {closest_key} available.")
@@ -253,19 +291,166 @@ class ActionWelcome(Action):
         
         return []
 
-class trainingClass(Action):
+class CheckinClass(Action):
 
     def name(self) -> Text:
-        return "action_training"
+        return "action_checkin"
+
+    def run(self, dispatcher: CollectingDispatcher,
+            tracker: Tracker,
+            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+
+
+        print(tracker.get_slot('Checkin_place'))
+        dispatcher.utter_message(text=tracker.get_slot('Checkin_place'))
+
+        location = tracker.get_slot('Checkin_place')
+        
+        home_list = ["workfromhome","work from home","wfh","home"]
+
+        input_word = location.lower()
+
+        for string in home_list:
+            # check if input_word and string have a similarity score of at least 0.6
+            if difflib.SequenceMatcher(None, input_word, string).ratio() >= 0.6:
+                location = 'remote'
+                break
+        
+        client_list = ["client","client site","client place","clientsite","clientplace"]
+        for string in client_list:
+            # check if input_word and string have a similarity score of at least 0.6
+            if difflib.SequenceMatcher(None, input_word, string).ratio() >= 0.6:
+                location = 'client site'
+                break
+
+        now_utc = datetime.utcnow()
+        today = now_utc.strftime('%Y-%m-%d')
+
+        url = "https://nexusuat.tvsnext.io:1180/api/Attendance/GetDailyAttendanceDetails"
+
+
+        headers = {
+            'Authorization': 'Bearer eyJhbGciOiJSUzI1NiIsImtpZCI6IkVGRjc4NDM0MUMzQTA1REFENEVBODYyNERBRjgzNTEzIiwidHlwIjoiYXQrand0In0.eyJuYmYiOjE2ODAyNjUxNzEsImV4cCI6MTY4NDE1MzE3MSwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo1MDAwIiwiYXVkIjoiTmV4dXNBUEkiLCJjbGllbnRfaWQiOiJuZXh1c191aSIsImp0aSI6IjcwRTZBNDFCMzhFNTIyRjgwNkU3QzlGRTlBMkQxM0YxIiwiaWF0IjoxNjgwMjY1MTcxLCJzY29wZSI6WyJOZXh1c0FQSSJdfQ.pqOG4pU7QqWDZWw2Dz874gMyMw-O0xyrnfSf2L0yjCqv4vJYTb2N9URcrzw75wv6RVW7zsvRabRRiKz8WhKxgHCDWORZZyY_F5pNfRy9kPlcskPBqo3HCezUrWbt1EcgeCRKwT6D1F6tWudKXj9pd8iBj6VuhZVv8XeFiKhF0pn3OYpHofV_IsIRJuYzK895Ckn0w3RHLRR4dFoiHbz_kP1q--FNI7hvexDduzl2BicTu40m5rliZ1kfPyy4_lm9lyHl8b1yn4BMPIccLwjEUrAMzHlTonWUXeV4wG0i3mjWrr1eONfPkyk1ziNtqqIHRBc-r1ZOafJncU-BjSbwtw'
+        }
+
+        params = {
+            "employeeId": 245,
+            "shiftDate": today,
+            "shiftDetailsId": 1
+        }
+        resp_attendance = requests.post(url, headers=headers,json = params)
+        resp = resp_attendance.json()
+
+        def Update_checkin_checkout(location,checkin_checkout_data):
+            today = now_utc.strftime('%Y-%m-%d')
+            checkin_checkout_time = now_utc.strftime('%Y-%m-%dT%H:%M:%S.%f')[:-3] + 'Z'
+            print(f"input params {location} -> {checkin_checkout_data}")
+
+            url = "https://nexusuat.tvsnext.io:1180/api/Attendance/InsertorUpdateAttendance"
+
+
+            headers = {
+                'Authorization': 'Bearer eyJhbGciOiJSUzI1NiIsImtpZCI6IkVGRjc4NDM0MUMzQTA1REFENEVBODYyNERBRjgzNTEzIiwidHlwIjoiYXQrand0In0.eyJuYmYiOjE2ODAyNjUxNzEsImV4cCI6MTY4NDE1MzE3MSwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo1MDAwIiwiYXVkIjoiTmV4dXNBUEkiLCJjbGllbnRfaWQiOiJuZXh1c191aSIsImp0aSI6IjcwRTZBNDFCMzhFNTIyRjgwNkU3QzlGRTlBMkQxM0YxIiwiaWF0IjoxNjgwMjY1MTcxLCJzY29wZSI6WyJOZXh1c0FQSSJdfQ.pqOG4pU7QqWDZWw2Dz874gMyMw-O0xyrnfSf2L0yjCqv4vJYTb2N9URcrzw75wv6RVW7zsvRabRRiKz8WhKxgHCDWORZZyY_F5pNfRy9kPlcskPBqo3HCezUrWbt1EcgeCRKwT6D1F6tWudKXj9pd8iBj6VuhZVv8XeFiKhF0pn3OYpHofV_IsIRJuYzK895Ckn0w3RHLRR4dFoiHbz_kP1q--FNI7hvexDduzl2BicTu40m5rliZ1kfPyy4_lm9lyHl8b1yn4BMPIccLwjEUrAMzHlTonWUXeV4wG0i3mjWrr1eONfPkyk1ziNtqqIHRBc-r1ZOafJncU-BjSbwtw'
+            }
+
+            params = {
+                "EmployeeId": 245,
+                "CheckinCheckoutTime": checkin_checkout_time,
+                "IsCheckin": checkin_checkout_data,
+                "date": today,
+                "workLocation": location,
+                "CreatedBy": 245,
+                "shiftId": 1
+            }
+            resp_updatecheckin_checkout = requests.post(url, headers=headers,json = params)
+            resp_update = resp_updatecheckin_checkout.status_code
+            return resp_update
+
+
+        print(f"is check in or not =  {resp['attendanceWithBreakDetail']['isCheckin']}")
+
+        if resp['attendanceWithBreakDetail']['isCheckin']:
+            print("checkin --> checkout")
+            print("you are already in check in mode")
+            dispatcher.utter_message(text="you are already in check in mode")
+        else:
+            print("check out --> check int completed")
+            Check_result = Update_checkin_checkout(location,True)
+            if Check_result == 200:
+                dispatcher.utter_message(text=f"You have successfully checked in. Check-in mode {location} is selected.\n Have a wonderful day!\n Is there anything else I can help you with?")
+            else:
+                dispatcher.utter_message(text=f"Something went wrong!")
+        return []
+
+class checkoutClass(Action):
+
+    def name(self) -> Text:
+        return "action_checkout"
 
     def run(self, dispatcher: CollectingDispatcher,
             tracker: Tracker,
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
         
 
-        print(f"Leave Type = {tracker.get_slot('LeaveType')}")
-        print(tracker.get_slot('daycount'))
-        print(tracker.get_slot('Checkin_place'))
-        dispatcher.utter_message(text=tracker.get_slot('Checkin_place'))
-        
+        now_utc = datetime.utcnow()
+        today = now_utc.strftime('%Y-%m-%d')
+
+        url = "https://nexusuat.tvsnext.io:1180/api/Attendance/GetDailyAttendanceDetails"
+
+
+        headers = {
+            'Authorization': 'Bearer eyJhbGciOiJSUzI1NiIsImtpZCI6IkVGRjc4NDM0MUMzQTA1REFENEVBODYyNERBRjgzNTEzIiwidHlwIjoiYXQrand0In0.eyJuYmYiOjE2ODAyNjUxNzEsImV4cCI6MTY4NDE1MzE3MSwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo1MDAwIiwiYXVkIjoiTmV4dXNBUEkiLCJjbGllbnRfaWQiOiJuZXh1c191aSIsImp0aSI6IjcwRTZBNDFCMzhFNTIyRjgwNkU3QzlGRTlBMkQxM0YxIiwiaWF0IjoxNjgwMjY1MTcxLCJzY29wZSI6WyJOZXh1c0FQSSJdfQ.pqOG4pU7QqWDZWw2Dz874gMyMw-O0xyrnfSf2L0yjCqv4vJYTb2N9URcrzw75wv6RVW7zsvRabRRiKz8WhKxgHCDWORZZyY_F5pNfRy9kPlcskPBqo3HCezUrWbt1EcgeCRKwT6D1F6tWudKXj9pd8iBj6VuhZVv8XeFiKhF0pn3OYpHofV_IsIRJuYzK895Ckn0w3RHLRR4dFoiHbz_kP1q--FNI7hvexDduzl2BicTu40m5rliZ1kfPyy4_lm9lyHl8b1yn4BMPIccLwjEUrAMzHlTonWUXeV4wG0i3mjWrr1eONfPkyk1ziNtqqIHRBc-r1ZOafJncU-BjSbwtw'
+        }
+
+        params = {
+            "employeeId": 245,
+            "shiftDate": today,
+            "shiftDetailsId": 1
+        }
+        resp_attendance = requests.post(url, headers=headers,json = params)
+        resp = resp_attendance.json()
+
+        def Update_checkin_checkout(location,checkin_checkout_data):
+            today = now_utc.strftime('%Y-%m-%d')
+            checkin_checkout_time = now_utc.strftime('%Y-%m-%dT%H:%M:%S.%f')[:-3] + 'Z'
+            print(f"input params {location} -> {checkin_checkout_data}")
+
+            url = "https://nexusuat.tvsnext.io:1180/api/Attendance/InsertorUpdateAttendance"
+
+
+            headers = {
+                'Authorization': 'Bearer eyJhbGciOiJSUzI1NiIsImtpZCI6IkVGRjc4NDM0MUMzQTA1REFENEVBODYyNERBRjgzNTEzIiwidHlwIjoiYXQrand0In0.eyJuYmYiOjE2ODAyNjUxNzEsImV4cCI6MTY4NDE1MzE3MSwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo1MDAwIiwiYXVkIjoiTmV4dXNBUEkiLCJjbGllbnRfaWQiOiJuZXh1c191aSIsImp0aSI6IjcwRTZBNDFCMzhFNTIyRjgwNkU3QzlGRTlBMkQxM0YxIiwiaWF0IjoxNjgwMjY1MTcxLCJzY29wZSI6WyJOZXh1c0FQSSJdfQ.pqOG4pU7QqWDZWw2Dz874gMyMw-O0xyrnfSf2L0yjCqv4vJYTb2N9URcrzw75wv6RVW7zsvRabRRiKz8WhKxgHCDWORZZyY_F5pNfRy9kPlcskPBqo3HCezUrWbt1EcgeCRKwT6D1F6tWudKXj9pd8iBj6VuhZVv8XeFiKhF0pn3OYpHofV_IsIRJuYzK895Ckn0w3RHLRR4dFoiHbz_kP1q--FNI7hvexDduzl2BicTu40m5rliZ1kfPyy4_lm9lyHl8b1yn4BMPIccLwjEUrAMzHlTonWUXeV4wG0i3mjWrr1eONfPkyk1ziNtqqIHRBc-r1ZOafJncU-BjSbwtw'
+            }
+
+            params = {
+                "EmployeeId": 245,
+                "CheckinCheckoutTime": checkin_checkout_time,
+                "IsCheckin": checkin_checkout_data,
+                "date": today,
+                "workLocation": location,
+                "CreatedBy": 245,
+                "shiftId": 1
+            }
+            resp_updatecheckin_checkout = requests.post(url, headers=headers,json = params)
+            resp_update = resp_updatecheckin_checkout.status_code
+            return resp_update
+
+
+        print(f"is check in or not =  {resp['attendanceWithBreakDetail']['isCheckin']}")
+
+        if resp['attendanceWithBreakDetail']['isCheckin']:
+            print("checkin --> checkout")
+            for data in resp['attendanceWithBreakDetail']['weeklyMonthlyAttendanceDetail']:
+                location = data['workLocation']
+            print(f"user last check in location {location}")
+
+            Check_result = Update_checkin_checkout(location,False)
+            if Check_result == 200:
+                dispatcher.utter_message(text="You have successfully checked out.\nIs there anything else I can help you with?")
+            else:
+                dispatcher.utter_message(text="something went wrong!")
+        else:
+            print("check out --> check int completed")
+            print("you are already in checkout mode first check in ")
+            dispatcher.utter_message(text="I am sorry I don't see that you have checked in for the day. \nWould you like to check in? ")
         return []

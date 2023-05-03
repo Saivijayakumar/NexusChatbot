@@ -49,9 +49,9 @@ stories:
   - intent: Check_in_intent
   - action: utter_checkin
   - intent: Check_In_Info
-  - action: action_training
+  - action: action_checkin
 
 - story: check_out_path
   steps:
   - intent: Check_out_intent
-  - action: action_training
+  - action: action_checkout
