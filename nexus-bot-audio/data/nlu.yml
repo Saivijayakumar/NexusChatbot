@@ -103,8 +103,8 @@ nlu:
     - [8th](dateValue) [january](monthValue)
     - from [12](dateValue) [june](monthValue)
     - apply from [19](dateValue) [july](monthValue)
-    - [16th](dateValue) [april](monthValue)
-    - [30th](dateValue) [april](monthValue)
+    - [16th](dateValue) [may](monthValue)
+    - [30th](dateValue) [may](monthValue)
     - from [2nd](dateValue) [november](monthValue)
     - apply from [3rd](dateValue) [february](monthValue)
     - [6](dateValue) [march](monthValue)
@@ -144,10 +144,36 @@ nlu:
     - so good
     - so perfect
 
-- intent: bot_challenge
+- intent: Check_in_intent
   examples: |
-    - are you a bot?
-    - are you a human?
-    - am I talking to a bot?
-    - am I talking to a human?
+    - check in
+    - do check in
+    - go with Check in
+    - i want to check in
+    - checkin
+    - check-in
+    - in
+    
+- intent: Check_out_intent
+  examples: |
+    - check out
+    - do check out
+    - go with Check out
+    - i want to check out 
+    - checkout
+    - check-out
+    - out
+
+- intent: Check_In_Info
+  examples: |
+    - [office](Checkin_place)
+    - [remote](Checkin_place)
+    - [client](Checkin_place)
+    - [work from home](Checkin_place)
+    - [wfh](Checkin_place)
+    - [home](Checkin_place)
+    - from [office](Checkin_place)
+    - from [remote](Checkin_place)
+    - from [client](Checkin_place)
+
 

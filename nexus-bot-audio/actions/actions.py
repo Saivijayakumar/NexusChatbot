@@ -149,12 +149,12 @@ class ActionWelcome(Action):
         'Compensatory off' : 8,'Permission' : 9,'Earned Leave': 10,'Special or Causal Leave': 11,'Sick Leave': 12,'Bereavement Leave': 13,'Paternity Leave' : 14,
         'Special Leave' : 15,'Flexi - Work From Home' : 16,'Optional Holiday' : 17,'Maternity Leave' : 18,'Emergency GL' : 19,'Relocation Leave' : 21,'Testing' : 24,'Restricted Leave' : 28,'Summer leave' : 29
         }
-        print(leavetype_dict)
+        # print(leavetype_dict)
         input_leave_type = tracker.get_slot('LeaveType')
         distances = {k: Levenshtein.distance(input_leave_type.lower(), k.lower()) for k in leavetype_dict.keys()}
         closest_key = min(distances, key=distances.get)
         AvailableLeaves = leavetype_dict[closest_key]
-        print(Leavetype_id_dict)
+        # print(Leavetype_id_dict)
         print(closest_key)
         leavetype_id = Leavetype_id_dict[closest_key]
         print(f"user select leave type ::: {closest_key} {AvailableLeaves}")
@@ -240,7 +240,7 @@ class ActionWelcome(Action):
         }
         
         
-        if int(RequestedLeaves) <= AvailableLeaves and fromdate_datetime.date() >= today:
+        if int(RequestedLeaves) <= AvailableLeaves and fromdate_datetime.date() >= today and int(RequestedLeaves) <= 6:
             resp = requests.post(url, headers=headers,json = params).json()
             dispatcher.utter_message(text=resp['statusText'])
             if len("Leave submitted successfully.") == len(resp['statusText']):
@@ -249,7 +249,7 @@ class ActionWelcome(Action):
             print(resp['statusText'])
             print("Future day")
         else:
-            dispatcher.utter_message(text=f"You have {AvailableLeaves} days but requested {RequestedLeaves} days.\nMake sure you are applying for future days. \nTry Again")
+            dispatcher.utter_message(text=f"You have {AvailableLeaves} days but requested {RequestedLeaves} days.\nIf requested leaves are more than 6 days, you have to apply through the portal.\nMake sure you are applying for future days. \nTry Again")
         
         return []
 
@@ -265,5 +265,7 @@ class trainingClass(Action):
 
         print(f"Leave Type = {tracker.get_slot('LeaveType')}")
         print(tracker.get_slot('daycount'))
+        print(tracker.get_slot('Checkin_place'))
+        dispatcher.utter_message(text=tracker.get_slot('Checkin_place'))
         
         return []

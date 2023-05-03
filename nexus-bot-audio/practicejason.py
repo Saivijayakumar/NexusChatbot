@@ -94,7 +94,86 @@ for key, value in leave_dict.items():
 # print(f"The closest key in leave_dict for '{input_str}' is '{closest_key}' with a matching percentage of {matching_percentage:.2f}%")
 
 
+import datetime
 
-print(1-int(0.5))
-print(int(0.5))
-print(1-0.5)
+# Get the current date and time in UTC timezone
+now_utc = datetime.datetime.utcnow()
+
+#now_utc = now_utc.replace(microsecond=now_utc.microsecond // 1000 * 1000)
+
+# Format the datetime as a string in ISO 8601 format with UTC timezone
+iso_stringt = now_utc.strftime('%Y-%m-%dT%H:%M:%S.%f')[:-3] + 'Z'
+iso_string = now_utc.strftime('%Y-%m-%d')
+print(iso_string)
+print(iso_stringt)
+
+
+import datetime
+
+data = [
+    {"appliedLeaveDetailsID": 0,
+     "date": datetime.date(2023, 5, 3).isoformat() + "T00:00:00.000Z",
+     "isFullDay": True,
+     "isFirstHalf": False,
+     "isSecondHalf": False,
+     "leaveId": 0,
+     "compensatoryOffId": 0,
+     "createdBy": 245
+    },
+    {"appliedLeaveDetailsID": 0,
+     "date": datetime.date(2023, 5, 4).isoformat() + "T00:00:00.000Z",
+     "isFullDay": True,
+     "isFirstHalf": False,
+     "isSecondHalf": False,
+     "leaveId": 0,
+     "compensatoryOffId": 0,
+     "createdBy": 245
+    },
+    {"appliedLeaveDetailsID": 0,
+     "date": datetime.date(2023, 5, 5).isoformat() + "T00:00:00.000Z",
+     "isFullDay": True,
+     "isFirstHalf": False,
+     "isSecondHalf": False,
+     "leaveId": 0,
+     "compensatoryOffId": 0,
+     "createdBy": 245
+    },
+    {"appliedLeaveDetailsID": 0,
+     "date": datetime.date(2023, 5, 8).isoformat() + "T00:00:00.000Z",
+     "isFullDay": True,
+     "isFirstHalf": False,
+     "isSecondHalf": False,
+     "leaveId": 0,
+     "compensatoryOffId": 0,
+     "createdBy": 245
+    },
+    {"appliedLeaveDetailsID": 0,
+     "date": datetime.date(2023, 5, 9).isoformat() + "T00:00:00.000Z",
+     "isFullDay": False,
+     "isFirstHalf": True,
+     "isSecondHalf": False,
+     "leaveId": 0,
+     "compensatoryOffId": 0,
+     "createdBy": 245
+    },
+    {"appliedLeaveDetailsID": 0,
+     "date": datetime.date(2023, 5, 10).isoformat() + "T00:00:00.000Z",
+     "isFullDay": False,
+     "isFirstHalf": False,
+     "isSecondHalf": True,
+     "leaveId": 0,
+     "compensatoryOffId": 0,
+     "createdBy": 245
+    },
+    {"appliedLeaveDetailsID": 0,
+     "date": datetime.date(2023, 5, 11).isoformat() + "T00:00:00.000Z",
+     "isFullDay": True,
+     "isFirstHalf": False,
+     "isSecondHalf": False,
+     "leaveId": 0,
+     "compensatoryOffId": 0,
+     "createdBy": 245
+    }
+]
+
+print(data)

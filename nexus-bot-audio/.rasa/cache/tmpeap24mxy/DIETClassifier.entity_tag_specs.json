@@ -1,0 +1,52 @@
+[
+  {
+    "tag_name": "entity",
+    "ids_to_tags": {
+      "1": "B-Checkin_place",
+      "2": "I-Checkin_place",
+      "3": "L-Checkin_place",
+      "4": "U-Checkin_place",
+      "5": "B-LeaveType",
+      "6": "I-LeaveType",
+      "7": "L-LeaveType",
+      "8": "U-LeaveType",
+      "9": "B-dateValue",
+      "10": "I-dateValue",
+      "11": "L-dateValue",
+      "12": "U-dateValue",
+      "13": "B-daycount",
+      "14": "I-daycount",
+      "15": "L-daycount",
+      "16": "U-daycount",
+      "17": "B-monthValue",
+      "18": "I-monthValue",
+      "19": "L-monthValue",
+      "20": "U-monthValue",
+      "0": "O"
+    },
+    "tags_to_ids": {
+      "B-Checkin_place": 1,
+      "I-Checkin_place": 2,
+      "L-Checkin_place": 3,
+      "U-Checkin_place": 4,
+      "B-LeaveType": 5,
+      "I-LeaveType": 6,
+      "L-LeaveType": 7,
+      "U-LeaveType": 8,
+      "B-dateValue": 9,
+      "I-dateValue": 10,
+      "L-dateValue": 11,
+      "U-dateValue": 12,
+      "B-daycount": 13,
+      "I-daycount": 14,
+      "L-daycount": 15,
+      "U-daycount": 16,
+      "B-monthValue": 17,
+      "I-monthValue": 18,
+      "L-monthValue": 19,
+      "U-monthValue": 20,
+      "O": 0
+    },
+    "num_tags": 21
+  }
+]

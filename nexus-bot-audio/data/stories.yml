@@ -8,19 +8,21 @@ stories:
 #   - action: action_training
 #   - action: utter_leavesdayinfo
 
+# - story: happy path part 1
+#   steps:
+#   - intent: greet
+#   - action: utter_greet
+#   - intent: Leave_info
+#   - action: action_leave_info
+
 - story: happy path part 1
   steps:
-  - intent: greet
-  - action: utter_greet
   - intent: Leave_info
   - action: action_leave_info
-
-- story: happy path part 2
-  steps:
   - intent: leave_type
   - action: utter_leavesdayinfo
   
-- story: happy path part 3
+- story: happy path part 2
   steps:
   - intent: leaves_count
   - action: utter_fromdateinfo
@@ -42,79 +44,14 @@ stories:
   - intent: deny
   - action: utter_goodbye
 
-# - story: happy path
-#   steps:
-#   - intent: leaves_count
-#   - action: utter_fromdateinfo
-#   - intent: From_date
-#   - action: utter_empty
-#   - action: action_welcome
-#   - action: utter_feedback
-#   - intent: affirm
-#   - action: utter_goodbye
+- story: check_in_path
+  steps:
+  - intent: Check_in_intent
+  - action: utter_checkin
+  - intent: Check_In_Info
+  - action: action_training
 
-
-# - story: happy path 2
-#   steps:
-#   - intent: Leave_info
-#   - action: action_leave_info
-#   - intent: affirm
-#   - action: utter_leavesdayinfo
-#   - intent: leaves_count
-#   - action: utter_fromdateinfo
-#   - intent: From_date
-#   - action: action_welcome
-#   - action: utter_feedback
-#   - intent: deny
-#   - action: utter_sorry
-#   - action: utter_goodbye
-
-# - story: happy path 3
-#   steps:
-#   - intent: Leave_info
-#   - action: action_leave_info
-#   - intent: deny
-#   - action: utter_goodbye
-
-
-# - story: sad path 1
-#   steps:
-#   - action: action_welcome
-#   - intent: greet
-#   - action: utter_greet
-#   - intent: Leave_info
-#   - action: utter_leaveinfo
-#   - action: action_leave_info
-#   - intent: leaves_count
-#   - action: utter_grantleave
-#   - action: utter_feedback
-#   - intent: deny
-#   - action: utter_sorry
-#   - action: utter_goodbye
-
-# - story: sad path 2
-#   steps:
-#   - action: action_welcome
-#   - intent: greet
-#   - action: utter_greet
-#   - intent: deny
-#   - action: utter_sorry
-#   - action: utter_goodbye
-  
-# - story: sad path 3
-#   steps:
-#   - action: action_welcome
-#   - intent: greet
-#   - action: utter_greet
-#   - intent: Leave_info
-#   - action: utter_leaveinfo
-#   - action: action_leave_info
-#   - intent: leaves_count
-#   - action: utter_grantleave
-#   - action: utter_feedback
-#   - intent: deny
-#   - action: utter_sorry
-#   - action: utter_goodbye
-
-
-  
+- story: check_out_path
+  steps:
+  - intent: Check_out_intent
+  - action: action_training

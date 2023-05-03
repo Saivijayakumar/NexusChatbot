@@ -6,13 +6,15 @@ intents:
   - affirm
   - deny
   - mood_great
-  - bot_challenge
   - leaves_count
   - Leave_info
   - From_date
   - leave_type
   - halfday_intent
-
+  - Check_in_intent
+  - Check_out_intent
+  - Check_In_Info
+  
 actions:
  - action_leave_info
  - action_welcome
@@ -23,7 +25,7 @@ entities:
 - monthValue
 - daycount
 - LeaveType
-
+- Checkin_place
 
 slots:
   dateValue:
@@ -50,6 +52,12 @@ slots:
     - type: from_entity
       entity: LeaveType
       intent: leave_type
+  Checkin_place:
+   type: text
+   mappings:
+    - type: from_entity
+      entity: Checkin_place
+      intent: Check_In_Info
 
 
 
@@ -81,8 +89,8 @@ responses:
   utter_iamabot:
   - text: "I am a bot, powered by Rasa."
 
-  utter_empty:
-  - text: ""
+  utter_checkin:
+  - text: "Are you checking in from office or remote?"
 
 
 session_config:
