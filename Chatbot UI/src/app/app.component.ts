@@ -29,7 +29,8 @@ export class AppComponent {
       message: ['', Validators.required],
     });
     this.messages.push({
-      text: 'Hello, My Name is Jarvis, How can I help you?',
+      // text: 'Hello, My Name is Jarvis, How can I help you?',
+      text: 'Hi,I am your HR Helpdesk Augmented Assistant.\n Here are the things you can do with the assistant\n1 - Apply Leave \n2 - Check In \n3 - Check Out',
       image: '',
       from: 'bot',
       time: new Date().toDateString(),
@@ -67,7 +68,7 @@ export class AppComponent {
   ngOnInit(): void {
     this.initVoiceInput();
     this.scrollToBottom();
-    this.backend.readText('Hello, My Name is Jarvis, How can I help you?');
+    this.backend.readText('Hi,I am your HR Helpdesk Augmented Assistant.\n Here are the things you can do with the assistant\n1 - Apply Leave\n2 - Check In \n3 - Check Out');
   }
 
   ngAfterViewChecked() {
@@ -114,5 +115,17 @@ export class AppComponent {
     this.isUserSpeaking = true;
     this.backend.start();
     this.chatForm.controls['message'].reset();
+  }
+
+  /**
+   * trying reset
+   */
+   resetRecording() {
+      
+    // Reset the form control for message
+    this.chatForm.controls['message'].reset();
+  
+    // Start a new recording
+    this.startRecording();
   }
 }

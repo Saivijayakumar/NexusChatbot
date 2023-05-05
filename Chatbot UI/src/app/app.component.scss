@@ -98,14 +98,19 @@ $size: 100px;
   
   .msger-inputarea {
     display: flex;
+    // align-items: center;
     padding: 10px;
     border-top:2px solid #ddd;
     background: #eee;
+    
   }
   .msger-inputarea * {
     padding: 10px;
     border: none;
     border-radius: 3px;
+    // changeing this--------------------------------------------------------------------
+    // display: flex;
+    // align-items: center;
     font-size: 1em;
   }
   .msger-input {
@@ -157,3 +162,10 @@ $size: 100px;
       opacity: 0;
     }
   }
+
+  // .msger-reset-btn {
+  //   font-weight: bold;
+  //   font-size: 2em;
+  //   cursor: pointer;
+  //   display: flex;
+  // }

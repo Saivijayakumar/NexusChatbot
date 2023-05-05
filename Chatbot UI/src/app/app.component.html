@@ -41,9 +41,13 @@
     <input type="text" class="msger-input" placeholder="Enter your message..." formControlName="message">
 
     <button type="submit" (click)="onSubmit()" class="msger-send-btn">Send</button>
+
     <div  *ngIf="!showMic" (click)="startRecording()" ><mat-icon class="mic">mic</mat-icon></div>
     <div *ngIf="showMic">
       Recording...
+      <button (click)="resetRecording()" class="msger-send-btn">rest</button>
+      <!-- <div><mat-icon (click)="resetRecording()" class="mic" >refresh</mat-icon></div> -->
+      <!-- <button ><mat-icon (click)="resetRecording()" class="msger-reset-btn">refresh</mat-icon></button> -->
     </div>
 
   </form>
