@@ -70,11 +70,14 @@ responses:
   - text: "Did that help you?"
 
   utter_leavesdayinfo:
-  - text: "For how many days would you like to apply?"
-
+  - text: "Please let me know the duration for which you would like to apply. You can choose a specific number of days (such as 5 days or 3 days), or you can opt for a half-day option as well."
+# - text: "For how many days would you like to apply?"
+#- text: "How many days would you like to apply for? You can specify a whole number of days or indicate that you need a half-day."
+#Please let me know the duration for which you would like to apply. You can choose a specific number of days (such as 5 days or 3 days), or you can opt for a half-day option as well.
   utter_fromdateinfo:
-  - text: "From which Date would you like to Apply?"
-
+  - text: "When would you like your application to start? Please provide a date, such as '5th May' or '2nd June'."
+# When would you like your application to start? Please provide a date, such as 'May 5th' or 'April 2nd'.
+# - text: "From which Date would you like to Apply?"
   utter_feedback:
   - text: "Is there anything else I can do for you?"
 

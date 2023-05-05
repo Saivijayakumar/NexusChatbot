@@ -302,8 +302,7 @@ class CheckinClass(Action):
 
 
         print(tracker.get_slot('Checkin_place'))
-        dispatcher.utter_message(text=tracker.get_slot('Checkin_place'))
-
+    
         location = tracker.get_slot('Checkin_place')
         
         home_list = ["workfromhome","work from home","wfh","home"]
@@ -313,14 +312,14 @@ class CheckinClass(Action):
         for string in home_list:
             # check if input_word and string have a similarity score of at least 0.6
             if difflib.SequenceMatcher(None, input_word, string).ratio() >= 0.6:
-                location = 'remote'
+                location = 'Remote'
                 break
         
         client_list = ["client","client site","client place","clientsite","clientplace"]
         for string in client_list:
             # check if input_word and string have a similarity score of at least 0.6
             if difflib.SequenceMatcher(None, input_word, string).ratio() >= 0.6:
-                location = 'client site'
+                location = 'clientSite'
                 break
 
         now_utc = datetime.utcnow()
@@ -363,8 +362,10 @@ class CheckinClass(Action):
                 "shiftId": 1
             }
             resp_updatecheckin_checkout = requests.post(url, headers=headers,json = params)
-            resp_update = resp_updatecheckin_checkout.status_code
-            return resp_update
+            
+            sample_json = resp_updatecheckin_checkout.json()
+            #print(f"------------------{sample_json['statusCode']}")
+            return sample_json['statusCode']
 
 
         print(f"is check in or not =  {resp['attendanceWithBreakDetail']['isCheckin']}")
@@ -376,10 +377,10 @@ class CheckinClass(Action):
         else:
             print("check out --> check int completed")
             Check_result = Update_checkin_checkout(location,True)
-            if Check_result == 200:
+            if Check_result == 'SUCCESS':
                 dispatcher.utter_message(text=f"You have successfully checked in. Check-in mode {location} is selected.\n Have a wonderful day!\n Is there anything else I can help you with?")
             else:
-                dispatcher.utter_message(text=f"Something went wrong!")
+                dispatcher.utter_message(text=f"Something went wrong!\n I'm sorry, it seems that you have applied for leave today and cannot do a check-in")
         return []
 
 class checkoutClass(Action):
